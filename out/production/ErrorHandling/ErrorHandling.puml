@@ -1,0 +1,68 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+
+package ConcreteHandler
+{
+ class EmailErrorHandler
+ {
+    private ReceiverInterface nextReceiver
+    public void setNextChain(ReceiverInterface nextReceiver
+     public boolean processMessage(Message msg)
+ }
+ class FaxErrorHandler
+ {
+
+    private ReceiverInterface nextReceiver
+    public void setNextChain(ReceiverInterface nextReceiver)
+    public boolean processMessage(Message msg)
+ }
+}
+
+package Handler
+{
+ interface ReceiverInterface
+ {
+  boolean processMessage(Message msg)
+    void setNextChain(ReceiverInterface nextChain)
+ }
+}
+
+EmailErrorHandler ..|> ReceiverInterface : implements
+FaxErrorHandler ..|> ReceiverInterface : implements
+ReceiverInterface --o ReceiverInterface : successor
+
+package Issues
+{
+enum MessagePriority
+{
+  Normal
+  High
+}
+class Message
+{
+    public String text
+    public MessagePriority priority
+    public Message(String msg, MessagePriority p)}
+}
+class IssueRaiser
+{
+   public ReceiverInterface setFirstReceiver
+   public IssueRaiser(ReceiverInterface firstReceiver
+   public void raiseMessage(Message msg)
+}
+
+}
+
+Message --* MessagePriority : has
+IssueRaiser --* Message : has
+
+Handler --> Issues : handles
+
+class Client
+{
+public static void main()
+}
+
+Client --> ReceiverInterface : sends command
+@enduml
